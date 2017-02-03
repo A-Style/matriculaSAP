@@ -73,13 +73,13 @@ public class buscar {
             }
             lista.setModel(lis);
         } catch (Exception e) {
-            System.out.println("error en listaPadres " + e);
+            System.out.println("error en controlador.buscar.listaPadres()... " + e);
         }
     }
 
-    public void datosPadres(JTextField nom, JTextField paterno, JTextField materno, JTextField dni, JDateChooser fecha,JTextField email,JTextField telFijo,JTextField cel,JComboBox cboDepartamento,JComboBox cboDistrito,JTextField dir,JLabel apoderado) {
+    public void datosPadres(JTextField nom, JTextField paterno, JTextField materno, JTextField dni, JDateChooser fecha,JTextField email,JTextField telFijo,JTextField cel,JTextField nEmergencia,JComboBox cboDepartamento,JComboBox cboDistrito,JTextField dir,JLabel apoderado) {
         try {
-            query = "SELECT pa.nombre,pa.apPaterno,pa.apMaterno,pa.dni,pa.fecNacimiento,pa.email,pa.telFijo,pa.celular,dis.distrito,dep.departamento,pa.direccion,\n"
+            query = "SELECT pa.nombre,pa.apPaterno,pa.apMaterno,pa.dni,pa.fecNacimiento,pa.email,pa.telFijo,pa.celular,pa.numEmergencia,dis.distrito,dep.departamento,pa.direccion,\n"
                     + "CASE  par.apoderado \n"
                     + "WHEN 1 THEN\n"
                     + "'Apoderado'\n"
@@ -106,15 +106,16 @@ public class buscar {
                     Date date = rs.getDate(5);
                     fecha.setDate(date);
                 } catch (Exception e) {
-                    System.out.println("error en datosPadre " + e);
+                    System.out.println("error en formato datosPadres" + e);
                 }
                 email.setText(rs.getString(6));
                 telFijo.setText(rs.getString(7));
-                cel.setText(rs.getString(8));                
-                cboDistrito.setSelectedItem(rs.getString(9));
-                cboDepartamento.setSelectedItem(rs.getString(10));
-                dir.setText(rs.getString(11));                
-                apoderado.setText(rs.getString(12));                
+                cel.setText(rs.getString(8)); 
+                nEmergencia.setText(rs.getString(9)); 
+                cboDistrito.setSelectedItem(rs.getString(10));
+                cboDepartamento.setSelectedItem(rs.getString(11));
+                dir.setText(rs.getString(12));                
+                apoderado.setText(rs.getString(13));                
 
             }
 

@@ -1,21 +1,21 @@
-
-
 package controlador;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
-
 public class regMatricula {
-    coneccion con=new coneccion();
-    
+
+    coneccion con = new coneccion();
+
     private int nivel;
     private int anio;
     private String seccion;
     private String procedencia;
     private String dniEmpleado;
     private String dniAlumno;
-    
+
     private int reqDniAlu;
     private int reqDniApo;
     private int reqCert;
@@ -23,15 +23,16 @@ public class regMatricula {
     private int reqPartida;
     private int reqFotos;
     private int reqRecibos;
-    
-    
+
     CallableStatement cst;
+    ResultSet rs;
+    PreparedStatement pst;
     String query;
-    
-    public void regMatricular(){
+
+    public void regMatricular() {
         try {
-            query="call Matricula(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            cst=con.ObtenerConeccion().prepareCall(query);
+            query = "call Matricula(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            cst = con.ObtenerConeccion().prepareCall(query);
             cst.setInt(1, getNivel());
             cst.setInt(2, getAnio());
             cst.setString(3, getSeccion());
@@ -47,16 +48,28 @@ public class regMatricula {
             cst.setInt(13, getReqRecibos());
             cst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Matricula Completa");
-        } catch (Exception e) {            
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se Pudo Matricular");
-            System.out.println("error en controlador.matricula.regMatricular()... "+e);
+            System.out.println("error en controlador.matricula.regMatricular()... " + e);
         }
     }
 
-    
-    
-    
-    
+    public boolean matriculadoSiNo() {
+        boolean a = false;
+        try {
+            query = "select idMatricula from tMatricula mat inner join tAlumno alu on mat.idAlumno=alu.idAlumno \n"
+                    + "where year(mat.fecha)=year(now()) and alu.dni=?";
+            pst=con.ObtenerConeccion().prepareStatement(query);
+            pst.setString(1,getDniAlumno());
+            rs=pst.executeQuery();
+            if (rs.next()) {
+                a=true;
+            }
+        } catch (Exception e) {
+        }
+        return a;
+    }
+
     /**
      * @return the nivel
      */
@@ -85,7 +98,6 @@ public class regMatricula {
         this.anio = anio;
     }
 
-    
     /**
      * @return the procedencia
      */

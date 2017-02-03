@@ -16,6 +16,7 @@ public class regPadres {
     private String direccion;
     private String telFijo;
     private String celular;
+    private String nEmergencia;
     private String email;
     
     private String dniEmpleado;
@@ -25,7 +26,9 @@ public class regPadres {
     private String parentesco;
     private String dniAlumno;
     private int apoderado;
-               
+    
+    private String dniAntiguoPadre;
+    
     PreparedStatement pst;
     CallableStatement cst;
     
@@ -34,7 +37,7 @@ public class regPadres {
     coneccion con=new coneccion();
     public void registroPadres(){
         try {
-            query="call registroPadres(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            query="call registroPadres(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             cst=con.ObtenerConeccion().prepareCall(query);
             cst.setString(1, getNombre());
             cst.setString(2, getApPaterno());
@@ -44,18 +47,42 @@ public class regPadres {
             cst.setString(6, getDireccion());
             cst.setString(7, getTelFijo());
             cst.setString(8, getCelular());
-            cst.setString(9, getEmail());
-            cst.setString(10, getDniEmpleado());
-            cst.setString(11, getDepartamento());
-            cst.setString(12, getDistrito());
-            cst.setString(13, getParentesco());
-            cst.setString(14, getDniAlumno());
-            cst.setInt(15, getApoderado());
+            cst.setString(9, getnEmergencia());
+            cst.setString(10, getEmail());
+            cst.setString(11, getDniEmpleado());
+            cst.setString(12, getDepartamento());
+            cst.setString(13, getDistrito());
+            cst.setString(14, getParentesco());
+            cst.setString(15, getDniAlumno());
+            cst.setInt(16, getApoderado());
             cst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Registro Completado");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se pudo Registrar, porfavor comuniquese con su proveedor");
             System.out.println("Error en controlador.regPadres.registroPadres()..."+e);
+        }
+    }
+    
+      public void actualizarPadres(){
+     try {
+            query="CALL actualizarPadres(?,?,?,?,?,?,?,?,?,?,?);";
+            cst=con.ObtenerConeccion().prepareCall(query);
+            cst.setString(1, getNombre());
+            cst.setString(2, getApPaterno());
+            cst.setString(3, getApMaterno());
+            cst.setString(4, getDniPadre());
+            cst.setString(5, getFechaNac());
+            cst.setString(6, getDireccion());
+            cst.setString(7, getTelFijo());
+            cst.setString(8, getCelular());
+            cst.setString(9, getnEmergencia());
+            cst.setString(10, getEmail());
+            cst.setString(11, getDniAntiguoPadre());
+            cst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Actualizacion Completada");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al Actualizar");
+            System.out.println("Error en controlador.regAlumno.actualizarAlumno()... "+e);
         }
     }
     
@@ -271,4 +298,34 @@ public class regPadres {
     public void setApoderado(int apoderado) {
         this.apoderado = apoderado;
     }
+
+    /**
+     * @return the nEmergencia
+     */
+    public String getnEmergencia() {
+        return nEmergencia;
+    }
+
+    /**
+     * @param nEmergencia the nEmergencia to set
+     */
+    public void setnEmergencia(String nEmergencia) {
+        this.nEmergencia = nEmergencia;
+    }
+
+    /**
+     * @return the dniAntiguoPadre
+     */
+    public String getDniAntiguoPadre() {
+        return dniAntiguoPadre;
+    }
+
+    /**
+     * @param dniAntiguoPadre the dniAntiguoPadre to set
+     */
+    public void setDniAntiguoPadre(String dniAntiguoPadre) {
+        this.dniAntiguoPadre = dniAntiguoPadre;
+    }
+
+   
 }

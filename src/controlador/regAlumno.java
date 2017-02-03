@@ -7,6 +7,7 @@ package controlador;
 
 import java.sql.CallableStatement;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 public class regAlumno {
 
@@ -17,6 +18,8 @@ public class regAlumno {
     private String dniAlumno;
     private String fechaNac;
     private String dniEmpleado;
+    
+    private String antiguoDniAlumno;
     
     CallableStatement cst;
      String query;
@@ -32,8 +35,28 @@ public class regAlumno {
             cst.setString(5,  getFechaNac());
             cst.setString(6, getDniEmpleado());
             cst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Alumno Registrado");
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de Registro");
             System.out.println("Error en controlador.regAlumno  registrarAlumno()..."+e);
+        }
+    }
+    
+    public void actualizarAlumno(){
+     try {
+            query="CALL actualizarAlumno(?,?,?,?,?,?);";
+            cst=con.ObtenerConeccion().prepareCall(query);
+            cst.setString(1, getNom());
+            cst.setString(2, getApPat());
+            cst.setString(3, getApMat());
+            cst.setString(4, getDniAlumno());
+            cst.setString(5,  getFechaNac());
+            cst.setString(6, getAntiguoDniAlumno());
+            cst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Actualizacion Completada");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al Actualizar");
+            System.out.println("Error en controlador.regAlumno.actualizarAlumno()... "+e);
         }
     }
     
@@ -124,6 +147,21 @@ public class regAlumno {
     public void setFechaNac(String fechaNac) {
         this.fechaNac = fechaNac;
     }
+
+    /**
+     * @return the antiguoDniAlumno
+     */
+    public String getAntiguoDniAlumno() {
+        return antiguoDniAlumno;
+    }
+
+    /**
+     * @param antiguoDniAlumno the antiguoDniAlumno to set
+     */
+    public void setAntiguoDniAlumno(String antiguoDniAlumno) {
+        this.antiguoDniAlumno = antiguoDniAlumno;
+    }
+
 
  
 }

@@ -15,8 +15,9 @@ public class coneccion {
     
         try {
             Class.forName("com.mysql.jdbc.Driver");            
-            cn= DriverManager.getConnection("jdbc:mysql://107.180.57.169/matriculaSAP","userMatricula","@erpMatricula");
-            //JOptionPane.showMessageDialog(null, "Conexion exitosa ");
+            //cn= DriverManager.getConnection("jdbc:mysql://107.180.57.169/matriculaSAP","userMatricula","@erpMatricula");//Hosting Godaddy Economico    
+            cn= DriverManager.getConnection("jdbc:mysql://107.180.48.91/matriculaSAP","userMatricula","@erpMatricula");//Hosting Godaddy Deluxe
+            
         } catch (ClassNotFoundException | SQLException | HeadlessException e) {
             System.out.println("error en coneccion.ObtenerConeccion()... "+e);
         }

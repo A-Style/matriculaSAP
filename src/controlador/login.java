@@ -31,9 +31,9 @@ public class login {
             } else {
                 rpt = false;
             }
-
             return rpt;
         } catch (SQLException ex) {
+            System.out.println("error en controlador.login.ingresar()... "+ex);
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rpt;
