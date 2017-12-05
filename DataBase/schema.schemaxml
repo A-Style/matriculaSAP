@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_spanish_ci">db_erpSAP</database>
+</source>
+<canvas zoom="75">
+<tables>
+<table name="CRM_aluIncidencias" view="colnames">
+<left>54</left>
+<top>376</top>
+<width>146</width>
+<height>131</height>
+<sql_create_table>CREATE TABLE `CRM_aluIncidencias` (
+  `idIncidencia` int(11) NOT NULL AUTO_INCREMENT,
+  `fecha` datetime DEFAULT NULL,
+  `descripcion` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `categoria` tinyint(4) DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  `idAlumno` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idIncidencia`),
+  KEY `idAlumno` (`idAlumno`),
+  KEY `idEmpleado` (`idEmpleado`),
+  CONSTRAINT `CRM_aluIncidencias_ibfk_1` FOREIGN KEY (`idAlumno`) REFERENCES `CRM_Alumno` (`idAlumno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="CRM_Alumno" view="colnames">
+<left>253</left>
+<top>333</top>
+<width>113</width>
+<height>144</height>
+<sql_create_table>CREATE TABLE `CRM_Alumno` (
+  `idAlumno` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `apPaterno` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `apMaterno` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `dni` char(8) COLLATE utf8_spanish_ci NOT NULL,
+  `fecnacimiento` date DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idAlumno`,`dni`),
+  KEY `tAlumno_ibfk_1` (`idEmpleado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="CRM_aluPadres" view="colnames">
+<left>590</left>
+<top>312</top>
+<width>125</width>
+<height>221</height>
+<sql_create_table>CREATE TABLE `CRM_aluPadres` (
+  `idPadre` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `apPaterno` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `apMaterno` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `dni` char(8) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `fecNacimiento` date DEFAULT NULL,
+  `direccion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `telFijo` varchar(10) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `celular` varchar(10) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `numEmergencia` varchar(10) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  `idDistrito` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idPadre`),
+  KEY `idDistrito` (`idDistrito`),
+  KEY `idEmpleado` (`idEmpleado`),
+  CONSTRAINT `CRM_aluPadres_ibfk_1` FOREIGN KEY (`idDistrito`) REFERENCES `tDistrito` (`idDistrito`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="CRM_aluParentesco" view="colnames">
+<left>419</left>
+<top>400</top>
+<width>132</width>
+<height>106</height>
+<sql_create_table>CREATE TABLE `CRM_aluParentesco` (
+  `idAlumno` int(11) DEFAULT NULL,
+  `idPadre` int(11) DEFAULT NULL,
+  `parentesco` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `apoderado` tinyint(1) DEFAULT NULL,
+  KEY `idPadres` (`idPadre`),
+  KEY `idAlumno` (`idAlumno`),
+  CONSTRAINT `CRM_aluParentesco_ibfk_1` FOREIGN KEY (`idAlumno`) REFERENCES `CRM_Alumno` (`idAlumno`),
+  CONSTRAINT `CRM_aluParentesco_ibfk_2` FOREIGN KEY (`idPadre`) REFERENCES `CRM_aluPadres` (`idPadre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="CRM_matRequisitos" view="colnames">
+<left>232</left>
+<top>129</top>
+<width>144</width>
+<height>157</height>
+<sql_create_table>CREATE TABLE `CRM_matRequisitos` (
+  `copiaDniAlu` tinyint(1) DEFAULT NULL,
+  `copiaDniApo` tinyint(1) DEFAULT NULL,
+  `certificadoEstudio` tinyint(1) DEFAULT NULL,
+  `fichaBoleta` tinyint(1) DEFAULT NULL,
+  `partNacimiento` tinyint(1) DEFAULT NULL,
+  `fotos` tinyint(1) DEFAULT NULL,
+  `recibos` tinyint(1) DEFAULT NULL,
+  `idMatricula` int(11) DEFAULT NULL,
+  KEY `idMatricula` (`idMatricula`),
+  CONSTRAINT `CRM_matRequisitos_ibfk_1` FOREIGN KEY (`idMatricula`) REFERENCES `CRM_Matricula` (`idMatricula`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="CRM_Matricula" view="colnames">
+<left>415</left>
+<top>229</top>
+<width>139</width>
+<height>157</height>
+<sql_create_table>CREATE TABLE `CRM_Matricula` (
+  `idMatricula` int(11) NOT NULL AUTO_INCREMENT,
+  `fecha` datetime DEFAULT NULL,
+  `nivel` tinyint(1) DEFAULT NULL,
+  `anio` tinyint(1) DEFAULT NULL,
+  `seccion` char(1) CHARACTER SET latin1 DEFAULT NULL,
+  `procedencia` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  `idAlumno` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idMatricula`),
+  KEY `tMatricula_ibfk_2` (`nivel`),
+  KEY `idEmpleado` (`idEmpleado`),
+  KEY `idAlumno` (`idAlumno`),
+  CONSTRAINT `CRM_Matricula_ibfk_1` FOREIGN KEY (`idAlumno`) REFERENCES `CRM_Alumno` (`idAlumno`),
+  CONSTRAINT `CRM_Matricula_ibfk_2` FOREIGN KEY (`idEmpleado`) REFERENCES `HRM_Empleado` (`idEmpleado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="HRM_Conocimientos" view="colnames">
+<left>761</left>
+<top>140</top>
+<width>149</width>
+<height>93</height>
+<sql_create_table>CREATE TABLE `HRM_Conocimientos` (
+  `conocimiento` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `Nivel` tinyint(4) DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  KEY `idEmpleado` (`idEmpleado`),
+  CONSTRAINT `HRM_Conocimientos_ibfk_1` FOREIGN KEY (`idEmpleado`) REFERENCES `HRM_Empleado` (`idEmpleado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="HRM_Contratos" view="colnames">
+<left>439</left>
+<top>101</top>
+<width>119</width>
+<height>106</height>
+<sql_create_table>CREATE TABLE `HRM_Contratos` (
+  `fechaInicio` date DEFAULT NULL,
+  `fechaFin` date DEFAULT NULL,
+  `Salario` float DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  KEY `idEmpleado` (`idEmpleado`),
+  CONSTRAINT `HRM_Contratos_ibfk_1` FOREIGN KEY (`idEmpleado`) REFERENCES `HRM_Empleado` (`idEmpleado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="HRM_Empleado" view="colnames">
+<left>606</left>
+<top>98</top>
+<width>124</width>
+<height>195</height>
+<sql_create_table>CREATE TABLE `HRM_Empleado` (
+  `idEmpleado` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
+  `apPaterno` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `apMaterno` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `dni` char(8) CHARACTER SET latin1 DEFAULT NULL,
+  `fecNacimiento` date DEFAULT NULL,
+  `telefono` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
+  `email` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `direccion` varchar(150) CHARACTER SET latin1 DEFAULT NULL,
+  `idDistrito` int(11) DEFAULT NULL,
+  `pass` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`idEmpleado`),
+  KEY `idDistrito` (`idDistrito`),
+  CONSTRAINT `HRM_Empleado_ibfk_1` FOREIGN KEY (`idDistrito`) REFERENCES `tDistrito` (`idDistrito`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="HRM_Estudios" view="colnames">
+<left>437</left>
+<top>2</top>
+<width>121</width>
+<height>93</height>
+<sql_create_table>CREATE TABLE `HRM_Estudios` (
+  `lugar` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `curso` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  KEY `idEmpleado` (`idEmpleado`),
+  CONSTRAINT `HRM_Estudios_ibfk_1` FOREIGN KEY (`idEmpleado`) REFERENCES `HRM_Empleado` (`idEmpleado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="HRM_Experiencias" view="colnames">
+<left>761</left>
+<top>2</top>
+<width>136</width>
+<height>119</height>
+<sql_create_table>CREATE TABLE `HRM_Experiencias` (
+  `lugar` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `cargo` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `fechaInicio` date DEFAULT NULL,
+  `fechaFin` date DEFAULT NULL,
+  `idEmpleado` int(11) DEFAULT NULL,
+  KEY `idEmpleado` (`idEmpleado`),
+  CONSTRAINT `HRM_Experiencias_ibfk_1` FOREIGN KEY (`idEmpleado`) REFERENCES `HRM_Empleado` (`idEmpleado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="tDepartamento" view="colnames">
+<left>786</left>
+<top>299</top>
+<width>104</width>
+<height>80</height>
+<sql_create_table>CREATE TABLE `tDepartamento` (
+  `idDepartamento` int(11) NOT NULL,
+  `departamento` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`idDepartamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="tDistrito" view="colnames">
+<left>781</left>
+<top>409</top>
+<width>104</width>
+<height>93</height>
+<sql_create_table>CREATE TABLE `tDistrito` (
+  `idDistrito` int(11) NOT NULL AUTO_INCREMENT,
+  `distrito` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `idDepartamento` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idDistrito`),
+  KEY `idDepartamento` (`idDepartamento`),
+  CONSTRAINT `tDistrito_ibfk_1` FOREIGN KEY (`idDepartamento`) REFERENCES `tDepartamento` (`idDepartamento`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
